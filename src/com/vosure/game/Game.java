@@ -24,8 +24,7 @@ public class Game extends Canvas implements Runnable {
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
 
-
-    public Game(){
+    public Game() {
         Dimension size = new Dimension(width * scale, height * scale);
         setPreferredSize(size);
 
@@ -41,7 +40,7 @@ public class Game extends Canvas implements Runnable {
         frame.setVisible(true);
     }
 
-    public void render(){
+    public void render() {
         BufferStrategy bs = getBufferStrategy();
         if (bs == null) {
             createBufferStrategy(3);
@@ -49,23 +48,31 @@ public class Game extends Canvas implements Runnable {
         }
 
         Graphics g = bs.getDrawGraphics();
+
         g.setColor(Color.lightGray);
-        g.fillRect(0,0, getWidth(), getHeight());
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        screen.render();
+        for (int i = 0; i < pixels.length; i++) {
+            pixels[i] = screen.pixels[i];
+        }
+
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         g.dispose();
         bs.show();
     }
 
-    public void update(){
+    public void update() {
 
     }
 
-    public synchronized void start(){
+    public synchronized void start() {
         running = true;
         thread = new Thread(this, "Display");
         thread.start();
     }
 
-    public synchronized  void stop(){
+    public synchronized void stop() {
         running = false;
         try {
             thread.join();
@@ -76,13 +83,13 @@ public class Game extends Canvas implements Runnable {
 
     @Override
     public void run() {
-        while (running){
+        while (running) {
             update();
             render();
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Game game = new Game();
         game.start();
     }
