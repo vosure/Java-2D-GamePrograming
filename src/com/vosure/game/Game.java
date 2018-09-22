@@ -1,5 +1,7 @@
 package com.vosure.game;
 
+import com.vosure.game.graphics.Screen;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -16,12 +18,18 @@ public class Game extends Canvas implements Runnable {
     private boolean running;
     private JFrame frame;
 
+    private Screen screen;
+
     private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+
+
 
     public Game(){
         Dimension size = new Dimension(width * scale, height * scale);
         setPreferredSize(size);
+
+        screen = new Screen(width, height);
 
         frame = new JFrame();
         frame.setResizable(false);
@@ -41,7 +49,7 @@ public class Game extends Canvas implements Runnable {
         }
 
         Graphics g = bs.getDrawGraphics();
-        g.setColor(Color.BLUE);
+        g.setColor(Color.lightGray);
         g.fillRect(0,0, getWidth(), getHeight());
         g.dispose();
         bs.show();
