@@ -25,7 +25,7 @@ public class Renderer {
             for (int x = 0; x < width; x++) {
                 //if (xtime < 0 || xtime >= width) break;
                 //pixels[xtime + ytime * width] = 0x0FF2BA;
-                pixels[x + y * width] = 0x0FF2BA;
+                pixels[x + y * width] = 0x0FF29A;
             }
         }
     }
