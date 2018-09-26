@@ -1,6 +1,6 @@
 package com.vosure.game;
 
-import com.vosure.game.graphics.Screen;
+import com.vosure.game.graphics.Renderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,15 +10,18 @@ import java.awt.image.DataBufferInt;
 
 public class Game extends Canvas implements Runnable {
 
-    public static int width = 300;
-    public static int height = width / 16 * 9;
-    public static int scale = 3;
+    private static int width = 300;
+    private static int height = width / 16 * 9;
+    private static int scale = 3;
 
     private Thread thread;
     private boolean running;
-    private JFrame frame;
 
-    private Screen screen;
+    private Renderer renderer;
+
+    private Graphics g = null;
+
+    private BufferStrategy bs;
 
     private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
@@ -28,9 +31,9 @@ public class Game extends Canvas implements Runnable {
         Dimension size = new Dimension(width * scale, height * scale);
         setPreferredSize(size);
 
-        screen = new Screen(width, height);
+        renderer = new Renderer(width, height, pixels);
 
-        frame = new JFrame();
+        JFrame frame = new JFrame();
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("No Game No Life");
@@ -38,41 +41,33 @@ public class Game extends Canvas implements Runnable {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        createBufferStrategy(3);
+        bs = getBufferStrategy();
     }
 
-    public void render() {
-        BufferStrategy bs = getBufferStrategy();
-        if (bs == null) {
-            createBufferStrategy(3);
-            return;
-        }
+    private void render() {
+        g = bs.getDrawGraphics();
 
-        Graphics g = bs.getDrawGraphics();
-
-        g.setColor(Color.lightGray);
-        g.fillRect(0, 0, getWidth(), getHeight());
-
-        screen.render();
-        for (int i = 0; i < pixels.length; i++) {
-            pixels[i] = screen.pixels[i];
-        }
+        renderer.clear();
+        renderer.render();
 
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         g.dispose();
         bs.show();
     }
 
-    public void update() {
+    private void update() {
 
     }
 
-    public synchronized void start() {
+    private synchronized void start() {
         running = true;
-        thread = new Thread(this, "Display");
+        thread = new Thread(this);
         thread.start();
     }
 
-    public synchronized void stop() {
+    private synchronized void stop() {
         running = false;
         try {
             thread.join();
@@ -90,8 +85,6 @@ public class Game extends Canvas implements Runnable {
     }
 
     public static void main(String[] args) {
-        Game game = new Game();
-        game.start();
+        new Game().start();
     }
-
 }
