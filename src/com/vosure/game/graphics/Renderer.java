@@ -33,8 +33,9 @@ public class Renderer {
             for (int x = 0; x < width; x++) {
                 //if (x < 0 || x >= width) break;
                 int xx = x + xOffset;
-                int tileIndex = ((xx >> 3) & MAP_SIZE_MASK) + ((yy >> 3) & MAP_SIZE_MASK) * MAP_SIZE;
-                pixels[x + y * width] = tiles[tileIndex];
+                int tileIndex = ((xx >> 4) & MAP_SIZE_MASK) + ((yy >> 4) & MAP_SIZE_MASK) * MAP_SIZE;
+                pixels[x + y * width] = Sprite.grass.pixels[(x & 15) + ((y & 15) * Sprite.grass.SIZE)];
+                //pixels[x + y * width] = tiles[tileIndex];
             }
         }
     }

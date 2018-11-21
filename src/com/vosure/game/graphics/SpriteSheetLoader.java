@@ -4,13 +4,15 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class SpriteSheet {
+public class SpriteSheetLoader {
 
     private String path;
-    private final int SIZE;
+    public final int SIZE;
     public int pixels[];
 
-    SpriteSheet(String path, int SIZE) {
+    public static SpriteSheetLoader tiles = new SpriteSheetLoader("/res/textures/spriteSheet.png", 256);
+
+    SpriteSheetLoader(String path, int SIZE) {
         this.path = path;
         this.SIZE = SIZE;
         pixels = new int[SIZE * SIZE];
@@ -20,7 +22,7 @@ public class SpriteSheet {
     private void loadSprite() {
 
         try {
-            BufferedImage image = ImageIO.read(SpriteSheet.class.getResource(path));
+            BufferedImage image = ImageIO.read(getClass().getResource("/textures/spriteSheet.png")); //"/resources/images/spriteSheet.png"
             int width = image.getWidth();
             int height = image.getHeight();
             image.getRGB(0, 0, width, height, pixels, 0, width);
