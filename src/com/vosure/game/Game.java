@@ -43,6 +43,8 @@ public class Game extends Canvas implements Runnable {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        frame.requestFocus();
+
         addKeyListener(new Keyboard());
 
         createBufferStrategy(3);
@@ -65,6 +67,12 @@ public class Game extends Canvas implements Runnable {
         if (Keyboard.isKeyPressed(KeyEvent.VK_DOWN) || Keyboard.isKeyPressed(KeyEvent.VK_S)) y++;
         if (Keyboard.isKeyPressed(KeyEvent.VK_LEFT) || Keyboard.isKeyPressed(KeyEvent.VK_A)) x--;
         if (Keyboard.isKeyPressed(KeyEvent.VK_RIGHT) || Keyboard.isKeyPressed(KeyEvent.VK_D)) x++;
+        if (Keyboard.isKeyPressed(KeyEvent.VK_ESCAPE))
+        {
+            frame.dispose();
+            thread.stop();
+        }
+
     }
 
     private synchronized void start() {

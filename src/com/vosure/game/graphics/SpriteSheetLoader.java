@@ -22,7 +22,7 @@ public class SpriteSheetLoader {
     private void loadSprite() {
 
         try {
-            BufferedImage image = ImageIO.read(getClass().getResource("/textures/spriteSheet.png")); //"/resources/images/spriteSheet.png"
+            BufferedImage image = ImageIO.read(getClass().getResource("/textures/spriteSheet.png"));
             int width = image.getWidth();
             int height = image.getHeight();
             image.getRGB(0, 0, width, height, pixels, 0, width);
