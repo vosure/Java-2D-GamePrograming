@@ -1,12 +1,12 @@
 package com.vosure.game.level;
 
-import javafx.stage.Screen;
+import com.vosure.game.graphics.Screen;
 
 public class Level {
 
-    private int width;
-    private int height;
-    private int[] tiles;
+    protected int width;
+    protected int height;
+    protected int[] tiles;
 
     Level(int width, int height) {
         this.width = width;
@@ -19,7 +19,7 @@ public class Level {
         loadLevel(path);
     }
 
-    private void generateLevel() {
+    protected void generateLevel() {
     }
 
     private void loadLevel(String path) {
@@ -31,7 +31,7 @@ public class Level {
     public void update() {
     }
 
-    private void time(){
+    private void time() {
     }
 
 }

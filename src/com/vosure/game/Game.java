@@ -1,6 +1,6 @@
 package com.vosure.game;
 
-import com.vosure.game.graphics.Renderer;
+import com.vosure.game.graphics.Screen;
 import com.vosure.game.input.Keyboard;
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ public class Game extends Canvas implements Runnable {
     private Thread thread;
     private boolean running;
 
-    private Renderer renderer;
+    private Screen screen;
 
     private JFrame frame = null;
     private Graphics g = null;
@@ -32,7 +32,7 @@ public class Game extends Canvas implements Runnable {
     public Game() {
         setPreferredSize(new Dimension(width * scale, height * scale));
 
-        renderer = new Renderer(width, height, pixels);
+        screen = new Screen(width, height, pixels);
 
         frame = new JFrame();
         frame.setResizable(false);
@@ -54,8 +54,8 @@ public class Game extends Canvas implements Runnable {
     private void render() {
         g = bs.getDrawGraphics();
 
-        renderer.clear();
-        renderer.render(x ,y);
+        screen.clear();
+        screen.render(x ,y);
 
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         g.dispose();
