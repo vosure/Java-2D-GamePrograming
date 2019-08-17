@@ -2,6 +2,8 @@ package com.vosure.game;
 
 import com.vosure.game.graphics.Screen;
 import com.vosure.game.input.Keyboard;
+import com.vosure.game.level.Level;
+import com.vosure.game.level.RandomLevel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,12 +17,13 @@ public class Game extends Canvas implements Runnable {
     private static int width = 300;
     private static int height = width / 16 * 9;
     private static int scale = 3;
-    private  int x = 0, y = 0;
+    private int x = 0, y = 0;
 
     private Thread thread;
     private boolean running;
 
     private Screen screen;
+    private Level level;
 
     private JFrame frame = null;
     private Graphics g = null;
@@ -33,6 +36,7 @@ public class Game extends Canvas implements Runnable {
         setPreferredSize(new Dimension(width * scale, height * scale));
 
         screen = new Screen(width, height, pixels);
+        level = new RandomLevel(width, height);
 
         frame = new JFrame();
         frame.setResizable(false);
@@ -55,7 +59,7 @@ public class Game extends Canvas implements Runnable {
         g = bs.getDrawGraphics();
 
         screen.clear();
-        screen.render(x ,y);
+        level.render(x * 5, y * 5, screen);
 
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         g.dispose();
@@ -67,8 +71,7 @@ public class Game extends Canvas implements Runnable {
         if (Keyboard.isKeyPressed(KeyEvent.VK_DOWN) || Keyboard.isKeyPressed(KeyEvent.VK_S)) y++;
         if (Keyboard.isKeyPressed(KeyEvent.VK_LEFT) || Keyboard.isKeyPressed(KeyEvent.VK_A)) x--;
         if (Keyboard.isKeyPressed(KeyEvent.VK_RIGHT) || Keyboard.isKeyPressed(KeyEvent.VK_D)) x++;
-        if (Keyboard.isKeyPressed(KeyEvent.VK_ESCAPE))
-        {
+        if (Keyboard.isKeyPressed(KeyEvent.VK_ESCAPE)) {
             frame.dispose();
             thread.stop();
         }
@@ -112,7 +115,7 @@ public class Game extends Canvas implements Runnable {
             render();
             frames++;
             if (System.currentTimeMillis() - time > 1000) {
-                time+=1000;
+                time += 1000;
                 System.out.println("Updates: " + updates + ", Frames: " + frames);
                 frames = 0;
                 updates = 0;

@@ -9,10 +9,11 @@ public class Sprite {
     private SpriteSheetLoader spriteSheetLoader;
 
     public static Sprite grass = new Sprite(16, 0, 0, SpriteSheetLoader.tiles);
+    public static Sprite voidSprite = new Sprite(16, 0xB16FCD);
 
-    Sprite(int SIZE, int x, int y, SpriteSheetLoader spriteSheetLoader) {
+    Sprite(int size, int x, int y, SpriteSheetLoader spriteSheetLoader) {
 
-        this.SIZE = SIZE;
+        SIZE = size;
         this.x = x;
         this.y = y;
         pixels = new int[SIZE * SIZE];
@@ -20,6 +21,18 @@ public class Sprite {
 
         loadSprite();
 
+    }
+
+    Sprite(int size, int color){
+        SIZE = size;
+        pixels = new int[SIZE * SIZE];
+        setColor(color);
+    }
+
+    private void setColor(int color){
+        for (int i = 0; i< SIZE * SIZE; i++){
+            pixels[i] = color;
+        }
     }
 
     private void loadSprite() {
