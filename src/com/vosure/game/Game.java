@@ -1,5 +1,6 @@
 package com.vosure.game;
 
+import com.vosure.game.entity.mob.Player;
 import com.vosure.game.graphics.Screen;
 import com.vosure.game.input.Keyboard;
 import com.vosure.game.level.Level;
@@ -22,8 +23,11 @@ public class Game extends Canvas implements Runnable {
     private Thread thread;
     private boolean running;
 
+    private Keyboard keyboardInput;
+
     private Screen screen;
     private Level level;
+    private Player player;
 
     private JFrame frame = null;
     private Graphics g = null;
@@ -37,6 +41,8 @@ public class Game extends Canvas implements Runnable {
 
         screen = new Screen(width, height, pixels);
         level = new RandomLevel(width, height);
+        keyboardInput = new Keyboard();
+        player = new Player(keyboardInput);
 
         frame = new JFrame();
         frame.setResizable(false);
@@ -59,7 +65,15 @@ public class Game extends Canvas implements Runnable {
         g = bs.getDrawGraphics();
 
         screen.clear();
-        level.render(x * 5, y * 5, screen);
+
+        int xScroll = player.x - screen.width / 2;
+        int yScroll = player.y - screen.height / 2;
+
+        level.render(xScroll, yScroll, screen);
+        player.render(screen);
+
+        for (int i = 0 ; i< pixels.length;i++)
+            pixels[i] = screen.pixels[i];
 
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
         g.dispose();
@@ -67,14 +81,12 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void update() {
-        if (Keyboard.isKeyPressed(KeyEvent.VK_UP) || Keyboard.isKeyPressed(KeyEvent.VK_W)) y--;
-        if (Keyboard.isKeyPressed(KeyEvent.VK_DOWN) || Keyboard.isKeyPressed(KeyEvent.VK_S)) y++;
-        if (Keyboard.isKeyPressed(KeyEvent.VK_LEFT) || Keyboard.isKeyPressed(KeyEvent.VK_A)) x--;
-        if (Keyboard.isKeyPressed(KeyEvent.VK_RIGHT) || Keyboard.isKeyPressed(KeyEvent.VK_D)) x++;
-        if (Keyboard.isKeyPressed(KeyEvent.VK_ESCAPE)) {
+        if (keyboardInput.escape){
             frame.dispose();
             thread.stop();
         }
+        keyboardInput.update();
+        player.update();
 
     }
 

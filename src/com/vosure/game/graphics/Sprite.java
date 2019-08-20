@@ -11,11 +11,16 @@ public class Sprite {
     public static Sprite grass = new Sprite(16, 0, 0, SpriteSheetLoader.tiles);
     public static Sprite voidSprite = new Sprite(16, 0xB16FCD);
 
+    public static Sprite player0 = new Sprite(16, 0, 10, SpriteSheetLoader.tiles);
+    public static Sprite player1 = new Sprite(16, 1, 10, SpriteSheetLoader.tiles);
+    public static Sprite player2 = new Sprite(16, 0, 11, SpriteSheetLoader.tiles);
+    public static Sprite player3 = new Sprite(16, 1, 11, SpriteSheetLoader.tiles);
+
     Sprite(int size, int x, int y, SpriteSheetLoader spriteSheetLoader) {
 
         SIZE = size;
-        this.x = x;
-        this.y = y;
+        this.x = x * SIZE;
+        this.y = y * SIZE;
         pixels = new int[SIZE * SIZE];
         this.spriteSheetLoader = spriteSheetLoader;
 
@@ -38,7 +43,7 @@ public class Sprite {
     private void loadSprite() {
         for (int y = 0; y < SIZE; y++) {
             for (int x = 0; x < SIZE; x++) {
-                pixels[x + y * SIZE] = spriteSheetLoader.pixels[(x + this.x) + (y + this.y) * spriteSheetLoader.SIZE];
+                pixels[x + y * SIZE] = spriteSheetLoader.pixels[(x + this.x) + (y + this.y) * 256];
             }
         }
 

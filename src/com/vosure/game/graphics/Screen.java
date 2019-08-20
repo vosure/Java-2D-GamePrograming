@@ -8,7 +8,7 @@ public class Screen {
 
     public int width, height;
     public int xOffset, yOffset;
-    private int[] pixels;
+    public int[] pixels;
 
     private static final int MAP_SIZE = 64;
     private static final int MAP_SIZE_MASK = MAP_SIZE - 1;
@@ -43,6 +43,24 @@ public class Screen {
                 if (xAbsolutePos < 0)
                     xAbsolutePos = 0;
                     pixels[xAbsolutePos + yAbsolutePos * width] = tile.sprite.pixels[x + y * tile.sprite.SIZE];
+            }
+        }
+    }
+
+    public void renderPlayer(int xPos, int yPos, Sprite sprite) {
+        xPos -= xOffset;
+        yPos -= yOffset;
+        for (int y = 0; y < 16; y++) {
+            int yAbsolutePos = y + yPos;
+            for (int x = 0; x < 16; x++) {
+                int xAbsolutePos = x + xPos;
+                if (xAbsolutePos < -16 || xAbsolutePos >= width || yAbsolutePos < 0 || yAbsolutePos >= height)
+                    break;
+                if (xAbsolutePos < 0)
+                    xAbsolutePos = 0;
+                int color = sprite.pixels[x + y * 16];
+                if (color != 0xffff00ff)
+                pixels[xAbsolutePos + yAbsolutePos * width] = color;
             }
         }
     }

@@ -10,7 +10,7 @@ public class SpriteSheetLoader {
     public final int SIZE;
     public int pixels[];
 
-    public static SpriteSheetLoader tiles = new SpriteSheetLoader("/res/textures/spriteSheet.png", 256);
+    public static SpriteSheetLoader tiles = new SpriteSheetLoader("/res/textures/spritesheet1.png", 256);
 
     SpriteSheetLoader(String path, int SIZE) {
         this.path = path;
@@ -20,15 +20,13 @@ public class SpriteSheetLoader {
     }
 
     private void loadSprite() {
-
         try {
-            BufferedImage image = ImageIO.read(getClass().getResource("/textures/spriteSheet.png"));
+            BufferedImage image = ImageIO.read(getClass().getResource("/textures/spritesheet1.png"));
             int width = image.getWidth();
             int height = image.getHeight();
             image.getRGB(0, 0, width, height, pixels, 0, width);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
