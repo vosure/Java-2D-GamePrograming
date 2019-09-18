@@ -47,18 +47,24 @@ public class Screen {
         }
     }
 
-    public void renderPlayer(int xPos, int yPos, Sprite sprite) {
+    public void renderPlayer(int xPos, int yPos, Sprite sprite, int flip) {
         xPos -= xOffset;
         yPos -= yOffset;
-        for (int y = 0; y < 16; y++) {
+        for (int y = 0; y < 32; y++) {
             int yAbsolutePos = y + yPos;
-            for (int x = 0; x < 16; x++) {
+            int ySprite = y;
+            if (flip == 2 || flip == 3)
+                ySprite = 31 - y;
+            for (int x = 0; x < 32; x++) {
                 int xAbsolutePos = x + xPos;
-                if (xAbsolutePos < -16 || xAbsolutePos >= width || yAbsolutePos < 0 || yAbsolutePos >= height)
+                int xSprite = x;
+                if (flip == 1 || flip == 3)
+                    xSprite = 31 - x;
+                if (xAbsolutePos < -32 || xAbsolutePos >= width || yAbsolutePos < 0 || yAbsolutePos >= height)
                     break;
                 if (xAbsolutePos < 0)
                     xAbsolutePos = 0;
-                int color = sprite.pixels[x + y * 16];
+                int color = sprite.pixels[xSprite + ySprite * 32];
                 if (color != 0xffff00ff)
                 pixels[xAbsolutePos + yAbsolutePos * width] = color;
             }
